@@ -12,6 +12,8 @@ class Fish extends React.Component {
       fish: [],
       originalFish: [],
       hemisphere: "northern",
+      locationFiltered: false,
+      timeFiltered: false,
     };
 
     this.handleSort = this.handleSort.bind(this);
@@ -113,6 +115,7 @@ class Fish extends React.Component {
         if (nameA > nameB) {
           return 1;
         }
+        return 0;
       });
     }
     if (value === "z-a") {
@@ -126,6 +129,7 @@ class Fish extends React.Component {
         if (nameA < nameB) {
           return 1;
         }
+        return 0;
       });
     }
 
@@ -150,23 +154,89 @@ class Fish extends React.Component {
     if (value === "southern") {
       this.setState({ hemisphere: "southern" });
     }
-    if (value === "All") {
+
+    let timeFiltered;
+    if (
+      (value === "4pm - 9am" ||
+        value === "9pm - 4am" ||
+        value === "4am - 9pm" ||
+        value === "9am - 4pm") &&
+      !this.state.locationFiltered
+    ) {
+      // timeFiltered = this.state.fish.filter((fish) => {
+      timeFiltered = this.state.originalFish.filter((fish) => {
+        if (fish.availability.time.includes(value)) {
+          return fish;
+        }
+        return "";
+      });
+      this.setState({
+        fish: timeFiltered,
+        timeFiltered: true,
+      });
+    }
+
+    if (
+      (value === "4pm - 9am" ||
+        value === "9pm - 4am" ||
+        value === "4am - 9pm" ||
+        value === "9am - 4pm") &&
+      this.state.locationFiltered
+    ) {
+      timeFiltered = this.state.fish.filter((fish) => {
+        // timeFiltered = this.state.originalFish.filter((fish) => {
+        if (fish.availability.time.includes(value)) {
+          return fish;
+        }
+        return "";
+      });
+      this.setState({
+        fish: timeFiltered,
+        timeFiltered: true,
+      });
+    }
+
+    if (value === "allLocations") {
       let originalFish = this.state.originalFish;
       this.setState({ fish: originalFish });
     }
     let locationFiltered;
     if (
-      value === "River" ||
-      value === "Pond" ||
-      value === "Sea" ||
-      value === "Pier"
+      (value === "River" ||
+        value === "Pond" ||
+        value === "Sea" ||
+        value === "Pier") &&
+      !this.state.timeFiltered
     ) {
       locationFiltered = this.state.originalFish.filter((fish) => {
         if (fish.availability.location.includes(value)) {
           return fish;
         }
+        return "";
       });
-      this.setState({ fish: locationFiltered });
+      this.setState({
+        fish: locationFiltered,
+        locationFiltered: true,
+      });
+    }
+
+    if (
+      (value === "River" ||
+        value === "Pond" ||
+        value === "Sea" ||
+        value === "Pier") &&
+      this.state.timeFiltered
+    ) {
+      locationFiltered = this.state.fish.filter((fish) => {
+        if (fish.availability.location.includes(value)) {
+          return fish;
+        }
+        return "";
+      });
+      this.setState({
+        fish: locationFiltered,
+        locationFiltered: true,
+      });
     }
   }
 

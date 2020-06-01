@@ -1,9 +1,9 @@
 import React from "react";
 
 class EachFish extends React.Component {
-  constructor(props) {
-    super(props);
-  }
+  // constructor(props) {
+  //   super(props);
+  // }
 
   render() {
     return (
@@ -11,7 +11,6 @@ class EachFish extends React.Component {
         <p>{this.props.fish.name}</p>
         <p>{this.props.fish.availability[this.props.hemisphere]}</p>
         <p>{this.props.fish.availability.time}</p>
-        {/* <p>{this.props.fish.availability[this.props.location]}</p> */}
         <p>{this.props.fish.availability.location}</p>
         <p>{this.props.fish.availability.rarity}</p>
         <p>{this.props.fish.shadow}</p>
