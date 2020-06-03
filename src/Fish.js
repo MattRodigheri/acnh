@@ -157,6 +157,7 @@ class Fish extends React.Component {
     }
 
     if (
+      value === "allTimes" ||
       value === "4pm - 9am" ||
       value === "9pm - 4am" ||
       value === "4am - 9pm" ||
@@ -166,6 +167,7 @@ class Fish extends React.Component {
     }
 
     if (
+      value === "allLocations" ||
       value === "River" ||
       value === "Pond" ||
       value === "Sea" ||
@@ -178,7 +180,7 @@ class Fish extends React.Component {
   filterFish() {
     const filteredFish = this.state.originalFish.filter((fish) => {
       if (
-        this.state.time !== "alltimes" &&
+        this.state.time !== "allTimes" &&
         this.state.location !== "allLocations"
       ) {
         if (
@@ -207,6 +209,12 @@ class Fish extends React.Component {
         if (fish.availability.location === this.state.location) {
           return fish;
         }
+      }
+      if (
+        this.state.time === "allTimes" &&
+        this.state.location === "allLocations"
+      ) {
+        return fish;
       }
     });
 
