@@ -77,6 +77,58 @@ class Fish extends React.Component {
             southMonths = `${southStartMonth} - ${southEndMonth}`;
           }
 
+          let orderedRarity = {
+            value: "",
+            rarity: "",
+          };
+
+          if (response.data[key].availability.rarity === "Ultra-rare") {
+            orderedRarity.value = 1;
+            orderedRarity.rarity = response.data[key].availability.rarity;
+          }
+          if (response.data[key].availability.rarity === "Rare") {
+            orderedRarity.value = 2;
+            orderedRarity.rarity = response.data[key].availability.rarity;
+          }
+          if (response.data[key].availability.rarity === "Uncommon") {
+            orderedRarity.value = 3;
+            orderedRarity.rarity = response.data[key].availability.rarity;
+          }
+          if (response.data[key].availability.rarity === "Common") {
+            orderedRarity.value = 4;
+            orderedRarity.rarity = response.data[key].availability.rarity;
+          }
+
+          let orderedShadow = {
+            value: "",
+            shadow: "",
+          };
+
+          if (response.data[key].shadow.split(" ")[0] === "Smallest") {
+            orderedShadow.value = 1;
+            orderedShadow.shadow = response.data[key].shadow.split(" ")[0];
+          }
+          if (response.data[key].shadow.split(" ")[0] === "Small") {
+            orderedShadow.value = 2;
+            orderedShadow.shadow = response.data[key].shadow.split(" ")[0];
+          }
+          if (response.data[key].shadow.split(" ")[0] === "Medium") {
+            orderedShadow.value = 3;
+            orderedShadow.shadow = response.data[key].shadow.split(" ")[0];
+          }
+          if (response.data[key].shadow.split(" ")[0] === "Narrow") {
+            orderedShadow.value = 4;
+            orderedShadow.shadow = response.data[key].shadow.split(" ")[0];
+          }
+          if (response.data[key].shadow.split(" ")[0] === "Large") {
+            orderedShadow.value = 5;
+            orderedShadow.shadow = response.data[key].shadow.split(" ")[0];
+          }
+          if (response.data[key].shadow.split(" ")[0] === "Largest") {
+            orderedShadow.value = 6;
+            orderedShadow.shadow = response.data[key].shadow.split(" ")[0];
+          }
+
           allFish.push({
             name: fishName,
             availability: {
@@ -84,9 +136,9 @@ class Fish extends React.Component {
               southern: southMonths,
               time: response.data[key].availability.time,
               location: response.data[key].availability.location,
-              rarity: response.data[key].availability.rarity,
+              rarity: orderedRarity,
             },
-            shadow: response.data[key].shadow.split(" ")[0],
+            shadow: orderedShadow,
             price: response.data[key].price,
             cjPrice: response.data[key]["price-cj"],
             image: response.data[key].image_uri,
@@ -131,6 +183,28 @@ class Fish extends React.Component {
           return 1;
         }
         return 0;
+      });
+    }
+
+    if (value === "mostRare") {
+      sortedFish = this.state.fish.sort((a, b) => {
+        return a.availability.rarity.value - b.availability.rarity.value;
+      });
+    }
+    if (value === "mostCommon") {
+      sortedFish = this.state.fish.sort((a, b) => {
+        return b.availability.rarity.value - a.availability.rarity.value;
+      });
+    }
+
+    if (value === "smallest") {
+      sortedFish = this.state.fish.sort((a, b) => {
+        return a.shadow.value - b.shadow.value;
+      });
+    }
+    if (value === "largest") {
+      sortedFish = this.state.fish.sort((a, b) => {
+        return b.shadow.value - a.shadow.value;
       });
     }
 

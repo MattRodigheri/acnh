@@ -59,8 +59,29 @@ class FishHeadings extends React.Component {
           </select>
         </div>
 
-        <p>Rarity</p>
-        <p>Shadow</p>
+        <div>
+          <p>Rarity</p>
+          <select
+            onChange={(event) => {
+              this.props.handleSort(event.target.value);
+            }}
+          >
+            <option value="mostRare">Most Rare</option>
+            <option value="mostCommon">Most Common</option>
+          </select>
+        </div>
+
+        <div>
+          <p>Shadow</p>
+          <select
+            onChange={(event) => {
+              this.props.handleSort(event.target.value);
+            }}
+          >
+            <option value="smallest">Smallest</option>
+            <option value="largest">Largest</option>
+          </select>
+        </div>
         <p>Nook's Price</p>
         <p>CJ's Price</p>
         <select onChange={(event) => this.props.handleSort(event.target.value)}>
