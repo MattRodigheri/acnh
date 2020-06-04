@@ -50,9 +50,57 @@ class Fish extends React.Component {
           let northMonths;
           let southMonths;
 
+          let timespan = {
+            value: "",
+            includedMonths: [],
+          };
+
           if (response.data[key].availability["month-northern"] === "") {
             northMonths = "Year-Round";
           } else {
+            if (
+              Number(
+                response.data[key].availability["month-northern"].split("-")[0]
+              ) <
+              Number(
+                response.data[key].availability["month-northern"].split("-")[1]
+              )
+            ) {
+              for (
+                let i = response.data[key].availability["month-northern"].split(
+                  "-"
+                )[0];
+                i <=
+                response.data[key].availability["month-northern"].split("-")[1];
+                i++
+              ) {
+                timespan.includedMonths.push(String(i));
+              }
+            } else {
+              for (
+                let i = response.data[key].availability["month-northern"].split(
+                  "-"
+                )[0];
+                i <= 12;
+                i++
+              ) {
+                timespan.includedMonths.push(String(i));
+              }
+              for (
+                let i = 1;
+                i <=
+                Number(
+                  response.data[key].availability["month-northern"].split(
+                    "-"
+                  )[1]
+                );
+                i++
+              ) {
+                timespan.includedMonths.push(String(i));
+              }
+              console.log(timespan);
+            }
+
             northStartMonth = moment(
               response.data[key].availability["month-northern"].split("-")[0]
             ).format("MMMM");
@@ -62,6 +110,8 @@ class Fish extends React.Component {
             ).format("MMMM");
 
             northMonths = `${northStartMonth} - ${northEndMonth}`;
+            timespan.value = northMonths;
+            // console.log(response.data[key].name, timespan);
           }
 
           if (response.data[key].availability["month-southern"] === "") {
