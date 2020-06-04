@@ -12,6 +12,7 @@ class Fish extends React.Component {
       originalFish: [],
       fish: [],
       hemisphere: "northern",
+      month: "allYear",
       time: "allTimes",
       location: "allLocations",
     };
@@ -201,6 +202,24 @@ class Fish extends React.Component {
     }
 
     if (
+      value === "allYear" ||
+      value === "january" ||
+      value === "february" ||
+      value === "march" ||
+      value === "april" ||
+      value === "may" ||
+      value === "june" ||
+      value === "july" ||
+      value === "august" ||
+      value === "september" ||
+      value === "october" ||
+      value === "november" ||
+      value === "december"
+    ) {
+      this.setState({ month: value }, this.filterFish);
+    }
+
+    if (
       value === "allTimes" ||
       value === "4pm - 9am" ||
       value === "9pm - 4am" ||
@@ -225,7 +244,23 @@ class Fish extends React.Component {
     const filteredFish = this.state.originalFish.filter((fish) => {
       if (
         this.state.time !== "allTimes" &&
-        this.state.location !== "allLocations"
+        this.state.location !== "allLocations" &&
+        this.state.month !== "allYear"
+      ) {
+        if (
+          (fish.availability.time === this.state.time ||
+            fish.availability.time === "Any") &&
+          fish.availability.location === this.state.location &&
+          (fish.availability.northern === this.state.month ||
+            fish.availability.northern === "Year-Round")
+        ) {
+          return fish;
+        }
+      }
+      if (
+        this.state.time !== "allTimes" &&
+        this.state.location !== "allLocations" &&
+        this.state.month === "allYear"
       ) {
         if (
           (fish.availability.time === this.state.time ||
@@ -237,7 +272,42 @@ class Fish extends React.Component {
       }
       if (
         this.state.time !== "allTimes" &&
-        this.state.location === "allLocations"
+        this.state.location === "allLocations" &&
+        this.state.month !== "allYear"
+      ) {
+        if (
+          (fish.availability.time === this.state.time ||
+            fish.availability.time === "Any") &&
+          fish.availability.northern === this.state.month
+        ) {
+          return fish;
+        }
+      }
+
+      if (
+        this.state.time === "allTimes" &&
+        this.state.location === "allLocations" &&
+        this.state.month !== "allYear"
+      ) {
+        if (fish.availability.northern === this.state.month) {
+          return fish;
+        }
+      }
+
+      if (
+        this.state.time === "allTimes" &&
+        this.state.location !== "allLocations" &&
+        this.state.month === "allYear"
+      ) {
+        if (fish.availability.location === this.state.location) {
+          return fish;
+        }
+      }
+
+      if (
+        this.state.time !== "allTimes" &&
+        this.state.location === "allLocations" &&
+        this.state.month === "allYear"
       ) {
         if (
           fish.availability.time === this.state.time ||
@@ -248,15 +318,20 @@ class Fish extends React.Component {
       }
       if (
         this.state.time === "allTimes" &&
-        this.state.location !== "allLocations"
+        this.state.location !== "allLocations" &&
+        this.state.month !== "allYear"
       ) {
-        if (fish.availability.location === this.state.location) {
+        if (
+          fish.availability.location === this.state.location &&
+          fish.availability.northern === this.state.month
+        ) {
           return fish;
         }
       }
       if (
         this.state.time === "allTimes" &&
-        this.state.location === "allLocations"
+        this.state.location === "allLocations" &&
+        this.state.month === "allYear"
       ) {
         return fish;
       }
@@ -281,7 +356,7 @@ class Fish extends React.Component {
           <div className="hemisphereSelect">
             <select
               onChange={(event) => {
-                this.props.handleFilter(event.target.value);
+                this.handleFilter(event.target.value);
               }}
             >
               <option value="northern">Northern Hemisphere</option>

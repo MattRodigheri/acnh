@@ -9,7 +9,28 @@ class FishHeadings extends React.Component {
     return (
       <div className="tableHeadings">
         <p>Name</p>
-        <p>Yearly Availability</p>
+        <div>
+          <p>Yearly Availability</p>
+          <select
+            onChange={(event) => {
+              this.props.handleFilter(event.target.value);
+            }}
+          >
+            <option value="allYear">All Year</option>
+            <option value="january">January</option>
+            <option value="february">February</option>
+            <option value="march">March</option>
+            <option value="april">April</option>
+            <option value="may">May</option>
+            <option value="june">June</option>
+            <option value="july">July</option>
+            <option value="august">August</option>
+            <option value="september">September</option>
+            <option value="october">October</option>
+            <option value="november">November</option>
+            <option value="december">December</option>
+          </select>
+        </div>
         <div>
           <p>Time of Day</p>
           <select
