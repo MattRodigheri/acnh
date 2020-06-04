@@ -150,41 +150,11 @@ class Fish extends React.Component {
         fish: allFish,
         originalFish: allFish,
       });
-      this.handleSort("a-z");
     });
   }
 
   handleSort(value) {
     let sortedFish;
-
-    if (value === "a-z") {
-      sortedFish = this.state.fish.sort((a, b) => {
-        const nameA = a.name;
-        const nameB = b.name;
-
-        if (nameA < nameB) {
-          return -1;
-        }
-        if (nameA > nameB) {
-          return 1;
-        }
-        return 0;
-      });
-    }
-    if (value === "z-a") {
-      sortedFish = this.state.fish.sort((a, b) => {
-        const nameA = a.name;
-        const nameB = b.name;
-
-        if (nameA > nameB) {
-          return -1;
-        }
-        if (nameA < nameB) {
-          return 1;
-        }
-        return 0;
-      });
-    }
 
     if (value === "mostRare") {
       sortedFish = this.state.fish.sort((a, b) => {
@@ -305,13 +275,27 @@ class Fish extends React.Component {
     });
 
     return (
-      <div className="fishTable">
-        <h1>Fish</h1>
-        <FishHeadings
-          handleSort={this.handleSort}
-          handleFilter={this.handleFilter}
-        />
-        {allFish}
+      <div>
+        <div className="fishTitle">
+          <h1>Fish</h1>
+          <div className="hemisphereSelect">
+            <select
+              onChange={(event) => {
+                this.props.handleFilter(event.target.value);
+              }}
+            >
+              <option value="northern">Northern Hemisphere</option>
+              <option value="southern">Southern Hemisphere</option>
+            </select>
+          </div>
+        </div>
+        <div className="fishTable">
+          <FishHeadings
+            handleSort={this.handleSort}
+            handleFilter={this.handleFilter}
+          />
+          {allFish}
+        </div>
       </div>
     );
   }

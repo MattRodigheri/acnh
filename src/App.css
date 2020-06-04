@@ -1,3 +1,10 @@
+.fishTitle {
+  display: grid;
+  grid-template-columns: 10% 10%;
+  align-items: center;
+}
+
+.fishTitle,
 .fishTable {
   width: 95%;
   margin: 0 auto;

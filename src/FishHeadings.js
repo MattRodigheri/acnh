@@ -8,27 +8,8 @@ class FishHeadings extends React.Component {
   render() {
     return (
       <div className="tableHeadings">
-        <div>
-          <p>Name</p>
-          <select
-            onChange={(event) => this.props.handleSort(event.target.value)}
-          >
-            <option value="a-z">A-Z</option>
-            <option value="z-a">Z-A</option>
-          </select>
-        </div>
-        <div>
-          <p>Hemisphere</p>
-          <select
-            onChange={(event) => {
-              this.props.handleFilter(event.target.value);
-            }}
-          >
-            <option value="northern">Northern </option>
-            <option value="southern">Southern </option>
-          </select>
-        </div>
-
+        <p>Name</p>
+        <p>Yearly Availability</p>
         <div>
           <p>Time of Day</p>
           <select
