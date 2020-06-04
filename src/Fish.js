@@ -57,6 +57,7 @@ class Fish extends React.Component {
 
           if (response.data[key].availability["month-northern"] === "") {
             northMonths = "Year-Round";
+            timespan.value = northMonths;
           } else {
             if (
               Number(
@@ -74,7 +75,7 @@ class Fish extends React.Component {
                 response.data[key].availability["month-northern"].split("-")[1];
                 i++
               ) {
-                timespan.includedMonths.push(String(i));
+                timespan.includedMonths.push(moment(String(i)).format("MMMM"));
               }
             } else {
               for (
@@ -84,7 +85,7 @@ class Fish extends React.Component {
                 i <= 12;
                 i++
               ) {
-                timespan.includedMonths.push(String(i));
+                timespan.includedMonths.push(moment(String(i)).format("MMMM"));
               }
               for (
                 let i = 1;
@@ -96,9 +97,8 @@ class Fish extends React.Component {
                 );
                 i++
               ) {
-                timespan.includedMonths.push(String(i));
+                timespan.includedMonths.push(moment(String(i)).format("MMMM"));
               }
-              console.log(timespan);
             }
 
             northStartMonth = moment(
@@ -111,7 +111,6 @@ class Fish extends React.Component {
 
             northMonths = `${northStartMonth} - ${northEndMonth}`;
             timespan.value = northMonths;
-            // console.log(response.data[key].name, timespan);
           }
 
           if (response.data[key].availability["month-southern"] === "") {
@@ -183,7 +182,7 @@ class Fish extends React.Component {
           allFish.push({
             name: fishName,
             availability: {
-              northern: northMonths,
+              northern: timespan,
               southern: southMonths,
               time: response.data[key].availability.time,
               location: response.data[key].availability.location,
@@ -253,18 +252,18 @@ class Fish extends React.Component {
 
     if (
       value === "allYear" ||
-      value === "january" ||
-      value === "february" ||
-      value === "march" ||
-      value === "april" ||
-      value === "may" ||
-      value === "june" ||
-      value === "july" ||
-      value === "august" ||
-      value === "september" ||
-      value === "october" ||
-      value === "november" ||
-      value === "december"
+      value === "January" ||
+      value === "February" ||
+      value === "March" ||
+      value === "April" ||
+      value === "May" ||
+      value === "June" ||
+      value === "July" ||
+      value === "August" ||
+      value === "September" ||
+      value === "October" ||
+      value === "November" ||
+      value === "December"
     ) {
       this.setState({ month: value }, this.filterFish);
     }
@@ -301,7 +300,9 @@ class Fish extends React.Component {
           (fish.availability.time === this.state.time ||
             fish.availability.time === "Any") &&
           fish.availability.location === this.state.location &&
-          (fish.availability.northern === this.state.month ||
+          (fish.availability.northern.includedMonths.includes(
+            this.state.month
+          ) ||
             fish.availability.northern === "Year-Round")
         ) {
           return fish;
@@ -339,7 +340,9 @@ class Fish extends React.Component {
         this.state.location === "allLocations" &&
         this.state.month !== "allYear"
       ) {
-        if (fish.availability.northern === this.state.month) {
+        if (
+          fish.availability.northern.includedMonths.includes(this.state.month)
+        ) {
           return fish;
         }
       }

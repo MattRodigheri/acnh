@@ -9,7 +9,7 @@ class EachFish extends React.Component {
     return (
       <div className="eachFish">
         <p>{this.props.fish.name}</p>
-        <p>{this.props.fish.availability[this.props.hemisphere]}</p>
+        <p>{this.props.fish.availability[this.props.hemisphere].value}</p>
         <p>{this.props.fish.availability.time}</p>
         <p>{this.props.fish.availability.location}</p>
         <p>{this.props.fish.availability.rarity.rarity}</p>
