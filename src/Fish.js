@@ -412,6 +412,7 @@ class Fish extends React.Component {
       ) {
         return fish;
       }
+      return "";
     });
 
     this.setState({

@@ -1,12 +1,18 @@
+.App {
+  margin: 100px auto;
+  width: 95%;
+}
+
 .fishTitle {
   display: grid;
   grid-template-columns: 10% 10%;
   align-items: center;
+  padding-top: 50px;
 }
 
 .fishTitle,
 .fishTable {
-  width: 95%;
+  /* width: 95%; */
   margin: 0 auto;
 }
 
