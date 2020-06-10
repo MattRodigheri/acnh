@@ -58,6 +58,20 @@ class Fish extends React.Component {
           if (response.data[key].availability["month-northern"] === "") {
             northMonths = "Year-Round";
             timespan.value = northMonths;
+            timespan.includedMonths = [
+              "January",
+              "February",
+              "March",
+              "April",
+              "May",
+              "June",
+              "July",
+              "August",
+              "September",
+              "October",
+              "November",
+              "December",
+            ];
           } else {
             if (
               Number(
@@ -329,7 +343,10 @@ class Fish extends React.Component {
         if (
           (fish.availability.time === this.state.time ||
             fish.availability.time === "Any") &&
-          fish.availability.northern === this.state.month
+          (fish.availability.northern.includedMonths.includes(
+            this.state.month
+          ) ||
+            fish.availability.northern === "Year-Round")
         ) {
           return fish;
         }
@@ -340,8 +357,12 @@ class Fish extends React.Component {
         this.state.location === "allLocations" &&
         this.state.month !== "allYear"
       ) {
+        console.log(fish.availability.northern);
         if (
-          fish.availability.northern.includedMonths.includes(this.state.month)
+          fish.availability.northern.includedMonths.includes(
+            this.state.month
+          ) ||
+          fish.availability.northern === "Year-Round"
         ) {
           return fish;
         }
@@ -375,8 +396,11 @@ class Fish extends React.Component {
         this.state.month !== "allYear"
       ) {
         if (
-          fish.availability.location === this.state.location &&
-          fish.availability.northern === this.state.month
+          (fish.availability.location === this.state.location &&
+            fish.availability.northern.includedMonths.includes(
+              this.state.month
+            )) ||
+          fish.availability.northern === "Year-Round"
         ) {
           return fish;
         }
