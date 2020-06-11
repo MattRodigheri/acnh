@@ -2,15 +2,15 @@ import React from "react";
 import "./App.css";
 import { TabContent, TabPane, Nav, NavItem, NavLink } from "reactstrap";
 import classnames from "classnames";
-
 import Fish from "./Fish.js";
+import Bugs from "./Bugs.js";
 
 class App extends React.Component {
   constructor() {
     super();
 
     this.state = {
-      activeTab: "Fish",
+      activeTab: "Bugs",
     };
 
     this.toggleTab = this.toggleTab.bind(this);
@@ -58,7 +58,7 @@ class App extends React.Component {
             <Fish />
           </TabPane>
           <TabPane tabId="Bugs">
-            <p>BUGS</p>
+            <Bugs />
           </TabPane>
         </TabContent>
       </div>

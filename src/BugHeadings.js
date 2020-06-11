@@ -1,13 +1,13 @@
 import React from "react";
 
-class FishHeadings extends React.Component {
+class BugHeadings extends React.Component {
   //   constructor(props) {
   //     super(props);
   //   }
 
   render() {
     return (
-      <div className="fishTableHeadings">
+      <div className="bugTableHeadings">
         <p>Name</p>
         <div>
           <p>Yearly Availability</p>
@@ -73,19 +73,8 @@ class FishHeadings extends React.Component {
           </select>
         </div>
 
-        <div>
-          <p>Shadow</p>
-          <select
-            onChange={(event) => {
-              this.props.handleSort(event.target.value);
-            }}
-          >
-            <option value="smallest">Smallest</option>
-            <option value="largest">Largest</option>
-          </select>
-        </div>
         <p>Nook's Price</p>
-        <p>CJ's Price</p>
+        <p>Flick's Price</p>
         <select onChange={(event) => this.props.handleSort(event.target.value)}>
           <option value="a-z">Price</option>
           <option value="highToLow">High to Low</option>
@@ -96,4 +85,4 @@ class FishHeadings extends React.Component {
   }
 }
 
-export default FishHeadings;
+export default BugHeadings;

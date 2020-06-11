@@ -3,7 +3,8 @@
   width: 95%;
 }
 
-.fishTitle {
+.fishTitle,
+.bugsTitle {
   display: grid;
   grid-template-columns: 10% 10%;
   align-items: center;
@@ -11,8 +12,8 @@
 }
 
 .fishTitle,
+.bugsTitle,
 .fishTable {
-  /* width: 95%; */
   margin: 0 auto;
 }
 
@@ -20,10 +21,21 @@
   font-weight: bold;
 }
 
-.tableHeadings,
+.fishTableHeadings,
 .eachFish {
   display: grid;
   grid-template-columns: 15% 15% 10% 10% 10% 10% 10% 5% 15%;
+  grid-template-rows: 5em;
+  border-top: 1px solid black;
+  align-items: center;
+  justify-items: center;
+  text-align: center;
+}
+
+.bugTableHeadings,
+.eachBug {
+  display: grid;
+  grid-template-columns: 15% 15% 10% 15% 13% 12% 10% 8%;
   grid-template-rows: 5em;
   border-top: 1px solid black;
   align-items: center;
