@@ -51,14 +51,33 @@ class Fish extends React.Component {
           let southMonths;
 
           let timespan = {
-            value: "",
-            includedMonths: [],
+            northern: { value: "", includedMonths: [] },
+            southern: { value: "", includedMonths: [] },
           };
 
-          if (response.data[key].availability["month-northern"] === "") {
+          if (
+            response.data[key].availability["month-northern"] === "" ||
+            response.data[key].availability["month-southern"] === ""
+          ) {
             northMonths = "Year-Round";
-            timespan.value = northMonths;
-            timespan.includedMonths = [
+            southMonths = "Year-Round";
+            timespan.northern.value = northMonths;
+            timespan.southern.value = southMonths;
+            timespan.northern.includedMonths = [
+              "January",
+              "February",
+              "March",
+              "April",
+              "May",
+              "June",
+              "July",
+              "August",
+              "September",
+              "October",
+              "November",
+              "December",
+            ];
+            timespan.southern.includedMonths = [
               "January",
               "February",
               "March",
@@ -89,7 +108,9 @@ class Fish extends React.Component {
                 response.data[key].availability["month-northern"].split("-")[1];
                 i++
               ) {
-                timespan.includedMonths.push(moment(String(i)).format("MMMM"));
+                timespan.northern.includedMonths.push(
+                  moment(String(i)).format("MMMM")
+                );
               }
             } else {
               for (
@@ -99,7 +120,9 @@ class Fish extends React.Component {
                 i <= 12;
                 i++
               ) {
-                timespan.includedMonths.push(moment(String(i)).format("MMMM"));
+                timespan.northern.includedMonths.push(
+                  moment(String(i)).format("MMMM")
+                );
               }
               for (
                 let i = 1;
@@ -111,7 +134,9 @@ class Fish extends React.Component {
                 );
                 i++
               ) {
-                timespan.includedMonths.push(moment(String(i)).format("MMMM"));
+                timespan.northern.includedMonths.push(
+                  moment(String(i)).format("MMMM")
+                );
               }
             }
 
@@ -124,12 +149,56 @@ class Fish extends React.Component {
             ).format("MMMM");
 
             northMonths = `${northStartMonth} - ${northEndMonth}`;
-            timespan.value = northMonths;
-          }
+            timespan.northern.value = northMonths;
 
-          if (response.data[key].availability["month-southern"] === "") {
-            southMonths = "Year-Round";
-          } else {
+            if (
+              Number(
+                response.data[key].availability["month-southern"].split("-")[0]
+              ) <
+              Number(
+                response.data[key].availability["month-southern"].split("-")[1]
+              )
+            ) {
+              for (
+                let i = response.data[key].availability["month-southern"].split(
+                  "-"
+                )[0];
+                i <=
+                response.data[key].availability["month-southern"].split("-")[1];
+                i++
+              ) {
+                timespan.southern.includedMonths.push(
+                  moment(String(i)).format("MMMM")
+                );
+              }
+            } else {
+              for (
+                let i = response.data[key].availability["month-southern"].split(
+                  "-"
+                )[0];
+                i <= 12;
+                i++
+              ) {
+                timespan.southern.includedMonths.push(
+                  moment(String(i)).format("MMMM")
+                );
+              }
+              for (
+                let i = 1;
+                i <=
+                Number(
+                  response.data[key].availability["month-southern"].split(
+                    "-"
+                  )[1]
+                );
+                i++
+              ) {
+                timespan.southern.includedMonths.push(
+                  moment(String(i)).format("MMMM")
+                );
+              }
+            }
+
             southStartMonth = moment(
               response.data[key].availability["month-southern"].split("-")[0]
             ).format("MMMM");
@@ -139,6 +208,7 @@ class Fish extends React.Component {
             ).format("MMMM");
 
             southMonths = `${southStartMonth} - ${southEndMonth}`;
+            timespan.southern.value = southMonths;
           }
 
           let orderedRarity = {
@@ -196,8 +266,8 @@ class Fish extends React.Component {
           allFish.push({
             name: fishName,
             availability: {
-              northern: timespan,
-              southern: southMonths,
+              northern: timespan.northern,
+              southern: timespan.southern,
               time: response.data[key].availability.time,
               location: response.data[key].availability.location,
               rarity: orderedRarity,
@@ -219,6 +289,10 @@ class Fish extends React.Component {
 
   handleSort(value) {
     let sortedFish;
+
+    if (value === "-") {
+      sortedFish = this.state.fish;
+    }
 
     if (value === "mostRare") {
       sortedFish = this.state.fish.sort((a, b) => {
@@ -258,10 +332,10 @@ class Fish extends React.Component {
 
   handleFilter(value) {
     if (value === "northern") {
-      this.setState({ hemisphere: "northern" });
+      this.setState({ hemisphere: "northern" }, this.filterFish);
     }
     if (value === "southern") {
-      this.setState({ hemisphere: "southern" });
+      this.setState({ hemisphere: "southern" }, this.filterFish);
     }
 
     if (
@@ -314,10 +388,10 @@ class Fish extends React.Component {
           (fish.availability.time === this.state.time ||
             fish.availability.time === "Any") &&
           fish.availability.location === this.state.location &&
-          (fish.availability.northern.includedMonths.includes(
+          (fish.availability[this.state.hemisphere].includedMonths.includes(
             this.state.month
           ) ||
-            fish.availability.northern === "Year-Round")
+            fish.availability[this.state.hemisphere] === "Year-Round")
         ) {
           return fish;
         }
@@ -343,10 +417,10 @@ class Fish extends React.Component {
         if (
           (fish.availability.time === this.state.time ||
             fish.availability.time === "Any") &&
-          (fish.availability.northern.includedMonths.includes(
+          (fish.availability[this.state.hemisphere].includedMonths.includes(
             this.state.month
           ) ||
-            fish.availability.northern === "Year-Round")
+            fish.availability[this.state.hemisphere] === "Year-Round")
         ) {
           return fish;
         }
@@ -358,10 +432,10 @@ class Fish extends React.Component {
         this.state.month !== "allYear"
       ) {
         if (
-          fish.availability.northern.includedMonths.includes(
+          fish.availability[this.state.hemisphere].includedMonths.includes(
             this.state.month
           ) ||
-          fish.availability.northern === "Year-Round"
+          fish.availability[this.state.hemisphere] === "Year-Round"
         ) {
           return fish;
         }
@@ -396,10 +470,10 @@ class Fish extends React.Component {
       ) {
         if (
           (fish.availability.location === this.state.location &&
-            fish.availability.northern.includedMonths.includes(
+            fish.availability[this.state.hemisphere].includedMonths.includes(
               this.state.month
             )) ||
-          fish.availability.northern === "Year-Round"
+          fish.availability[this.state.hemisphere] === "Year-Round"
         ) {
           return fish;
         }

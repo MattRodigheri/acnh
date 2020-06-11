@@ -68,8 +68,9 @@ class FishHeadings extends React.Component {
               this.props.handleSort(event.target.value);
             }}
           >
-            <option value="mostRare">Most Rare</option>
-            <option value="mostCommon">Most Common</option>
+            <option value="-">-</option>
+            <option value="mostRare">Rare</option>
+            <option value="mostCommon">Common</option>
           </select>
         </div>
 
@@ -80,6 +81,7 @@ class FishHeadings extends React.Component {
               this.props.handleSort(event.target.value);
             }}
           >
+            <option value="-">-</option>
             <option value="smallest">Smallest</option>
             <option value="largest">Largest</option>
           </select>
