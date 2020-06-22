@@ -10,7 +10,7 @@ class App extends React.Component {
     super();
 
     this.state = {
-      activeTab: "Fish",
+      activeTab: "Bugs",
     };
 
     this.toggleTab = this.toggleTab.bind(this);

@@ -44,7 +44,6 @@ class Fish extends React.Component {
           };
 
           if (response.data[key].availability.time === "") {
-            //response.data[key].availability.time = "Any";
             timeOfDay.hours = "Any";
           }
           if (response.data[key].availability.time === "4am - 9pm") {
@@ -275,7 +274,6 @@ class Fish extends React.Component {
             availability: {
               northern: timespan.northern,
               southern: timespan.southern,
-              //time: response.data[key].availability.time,
               time: timeOfDay,
               location: response.data[key].availability.location,
               rarity: orderedRarity,
@@ -370,10 +368,6 @@ class Fish extends React.Component {
       value === "9am - 4pm" ||
       value === "4pm - 9pm" ||
       value === "9pm - 4am"
-      // value === "4pm - 9am" ||
-      // value === "9pm - 4am" ||
-      // value === "4am - 9pm" ||
-      // value === "9am - 4pm"
     ) {
       this.setState({ time: value }, this.filterFish);
     }
@@ -400,7 +394,6 @@ class Fish extends React.Component {
           (fish.availability.time.group.includes(this.state.time) ||
             fish.availability.time.hours === "Any") &&
           fish.availability.location.includes(this.state.location) &&
-          // fish.availability.location === this.state.location &&
           (fish.availability[this.state.hemisphere].includedMonths.includes(
             this.state.month
           ) ||
@@ -418,7 +411,6 @@ class Fish extends React.Component {
           (fish.availability.time.group.includes(this.state.time) ||
             fish.availability.time.hours === "Any") &&
           fish.availability.location.includes(this.state.location)
-          // fish.availability.location === this.state.location
         ) {
           return fish;
         }
@@ -461,7 +453,6 @@ class Fish extends React.Component {
         this.state.month === "allYear"
       ) {
         if (fish.availability.location.includes(this.state.location)) {
-          // if (fish.availability.location === this.state.location) {
           return fish;
         }
       }
@@ -485,7 +476,6 @@ class Fish extends React.Component {
       ) {
         if (
           (fish.availability.location.includes(this.state.location) &&
-            // (fish.availability.location === this.state.location &&
             fish.availability[this.state.hemisphere].includedMonths.includes(
               this.state.month
             )) ||

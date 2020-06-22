@@ -29,9 +29,16 @@ class Bugs extends React.Component {
       for (let key in response.data) {
         if (key.includes("_")) {
           bugName = key.split("_");
-          bugName[0] = bugName[0].charAt(0).toUpperCase() + bugName[0].slice(1);
-          bugName[1] = bugName[1].charAt(0).toUpperCase() + bugName[1].slice(1);
-          bugName = `${bugName[0]} ${bugName[1]}`;
+          let capitalizedName = [];
+          for (let i = 0; i < bugName.length; i++) {
+            capitalizedName.push(
+              bugName[i].charAt(0).toUpperCase() + bugName[i].slice(1)
+            );
+          }
+          bugName = capitalizedName.join(" ");
+          // bugName[0] = bugName[0].charAt(0).toUpperCase() + bugName[0].slice(1);
+          // bugName[1] = bugName[1].charAt(0).toUpperCase() + bugName[1].slice(1);
+          // bugName = `${bugName[0]} ${bugName[1]}`;
         } else {
           bugName = key.charAt(0).toUpperCase() + key.slice(1);
         }
@@ -240,12 +247,16 @@ class Bugs extends React.Component {
     }
 
     if (
-      value === "allLocations"
-      //   ||
-      //   value === "River" ||
-      //   value === "Pond" ||
-      //   value === "Sea" ||
-      //   value === "Pier"
+      value === "allLocations" ||
+      value === "Flying" ||
+      value === "Trees" ||
+      value === "Ground" ||
+      value === "Flowers" ||
+      value === "Water" ||
+      value === "Beach" ||
+      value === "Trash" ||
+      value === "Rocks" ||
+      value === "Villagers"
     ) {
       this.setState({ location: value }, this.filterBugs);
     }

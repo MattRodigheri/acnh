@@ -39,10 +39,10 @@ class BugHeadings extends React.Component {
             }}
           >
             <option value="allTimes">All</option>
-            <option value="4pm - 9am">4pm - 9am</option>
+            {/* <option value="4pm - 9am">4pm - 9am</option>
             <option value="9pm - 4am">9pm - 4am</option>
             <option value="4am - 9pm">4am - 9pm</option>
-            <option value="9am - 4pm">9am - 4pm</option>
+            <option value="9am - 4pm">9am - 4pm</option> */}
           </select>
         </div>
 
@@ -54,10 +54,15 @@ class BugHeadings extends React.Component {
             }}
           >
             <option value="allLocations">All</option>
-            <option value="River">River</option>
-            <option value="Pond">Pond</option>
-            <option value="Sea">Sea</option>
-            <option value="Pier">Pier</option>
+            <option value="Flying">Flying</option>
+            <option value="Trees">Trees</option>
+            <option value="Ground">Ground</option>
+            <option value="Flowers">Flowers</option>
+            <option value="Water">Water</option>
+            <option value="Beach">Beach</option>
+            <option value="Rocks">Rocks</option>
+            <option value="Trash">Trash</option>
+            <option value="Misc">Misc.</option>
           </select>
         </div>
 
