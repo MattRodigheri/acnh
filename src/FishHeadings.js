@@ -39,10 +39,15 @@ class FishHeadings extends React.Component {
             }}
           >
             <option value="allTimes">All</option>
-            <option value="4pm - 9am">4pm - 9am</option>
+            <option value="4am - 9am">4am - 9am</option>
+            <option value="9am - 4pm">9am - 4pm</option>
+            <option value="4pm - 9pm">4pm - 9pm</option>
+            <option value="9pm - 4am">9pm - 4am</option>
+
+            {/* <option value="4pm - 9am">4pm - 9am</option>
             <option value="9pm - 4am">9pm - 4am</option>
             <option value="4am - 9pm">4am - 9pm</option>
-            <option value="9am - 4pm">9am - 4pm</option>
+            <option value="9am - 4pm">9am - 4pm</option> */}
           </select>
         </div>
 

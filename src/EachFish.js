@@ -10,7 +10,7 @@ class EachFish extends React.Component {
       <div className="eachFish">
         <p>{this.props.fish.name}</p>
         <p>{this.props.fish.availability[this.props.hemisphere].value}</p>
-        <p>{this.props.fish.availability.time}</p>
+        <p>{this.props.fish.availability.time.hours}</p>
         <p>{this.props.fish.availability.location}</p>
         <p>{this.props.fish.availability.rarity.rarity}</p>
         <p>{this.props.fish.shadow.shadow}</p>

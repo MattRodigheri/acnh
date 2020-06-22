@@ -37,10 +37,31 @@ class Fish extends React.Component {
         } else {
           fishName = key.charAt(0).toUpperCase() + key.slice(1);
         }
-
         if (response.data[key]) {
+          let timeOfDay = {
+            hours: "",
+            group: [],
+          };
+
           if (response.data[key].availability.time === "") {
-            response.data[key].availability.time = "Any";
+            //response.data[key].availability.time = "Any";
+            timeOfDay.hours = "Any";
+          }
+          if (response.data[key].availability.time === "4am - 9pm") {
+            timeOfDay.hours = response.data[key].availability.time;
+            timeOfDay.group.push("4am - 9am", "9am - 4pm", "4pm - 9pm");
+          }
+          if (response.data[key].availability.time === "9am - 4pm") {
+            timeOfDay.hours = response.data[key].availability.time;
+            timeOfDay.group.push("9am - 4pm");
+          }
+          if (response.data[key].availability.time === "4pm - 9am") {
+            timeOfDay.hours = response.data[key].availability.time;
+            timeOfDay.group.push("4am - 9am", "4pm - 9pm", "9pm - 4am");
+          }
+          if (response.data[key].availability.time === "9pm - 4am") {
+            timeOfDay.hours = response.data[key].availability.time;
+            timeOfDay.group.push("9pm - 4am");
           }
 
           let northStartMonth;
@@ -92,53 +113,46 @@ class Fish extends React.Component {
               "December",
             ];
           } else {
-            if (
-              Number(
-                response.data[key].availability["month-northern"].split("-")[0]
-              ) <
-              Number(
-                response.data[key].availability["month-northern"].split("-")[1]
-              )
-            ) {
-              for (
-                let i = response.data[key].availability["month-northern"].split(
-                  "-"
-                )[0];
-                i <=
-                response.data[key].availability["month-northern"].split("-")[1];
-                i++
-              ) {
-                timespan.northern.includedMonths.push(
-                  moment(String(i)).format("MMMM")
-                );
+            timespan.northern.includedMonths = response.data[key].availability[
+              "month-array-northern"
+            ].map((month) => {
+              if (month === 1) {
+                return "January";
               }
-            } else {
-              for (
-                let i = response.data[key].availability["month-northern"].split(
-                  "-"
-                )[0];
-                i <= 12;
-                i++
-              ) {
-                timespan.northern.includedMonths.push(
-                  moment(String(i)).format("MMMM")
-                );
+              if (month === 2) {
+                return "February";
               }
-              for (
-                let i = 1;
-                i <=
-                Number(
-                  response.data[key].availability["month-northern"].split(
-                    "-"
-                  )[1]
-                );
-                i++
-              ) {
-                timespan.northern.includedMonths.push(
-                  moment(String(i)).format("MMMM")
-                );
+              if (month === 3) {
+                return "March";
               }
-            }
+              if (month === 4) {
+                return "April";
+              }
+              if (month === 5) {
+                return "May";
+              }
+              if (month === 6) {
+                return "June";
+              }
+              if (month === 7) {
+                return "July";
+              }
+              if (month === 8) {
+                return "August";
+              }
+              if (month === 9) {
+                return "September";
+              }
+              if (month === 10) {
+                return "October";
+              }
+              if (month === 11) {
+                return "November";
+              }
+              if (month === 12) {
+                return "December";
+              }
+            });
 
             northStartMonth = moment(
               response.data[key].availability["month-northern"].split("-")[0]
@@ -151,53 +165,46 @@ class Fish extends React.Component {
             northMonths = `${northStartMonth} - ${northEndMonth}`;
             timespan.northern.value = northMonths;
 
-            if (
-              Number(
-                response.data[key].availability["month-southern"].split("-")[0]
-              ) <
-              Number(
-                response.data[key].availability["month-southern"].split("-")[1]
-              )
-            ) {
-              for (
-                let i = response.data[key].availability["month-southern"].split(
-                  "-"
-                )[0];
-                i <=
-                response.data[key].availability["month-southern"].split("-")[1];
-                i++
-              ) {
-                timespan.southern.includedMonths.push(
-                  moment(String(i)).format("MMMM")
-                );
+            timespan.southern.includedMonths = response.data[key].availability[
+              "month-array-southern"
+            ].map((month) => {
+              if (month === 1) {
+                return "January";
               }
-            } else {
-              for (
-                let i = response.data[key].availability["month-southern"].split(
-                  "-"
-                )[0];
-                i <= 12;
-                i++
-              ) {
-                timespan.southern.includedMonths.push(
-                  moment(String(i)).format("MMMM")
-                );
+              if (month === 2) {
+                return "February";
               }
-              for (
-                let i = 1;
-                i <=
-                Number(
-                  response.data[key].availability["month-southern"].split(
-                    "-"
-                  )[1]
-                );
-                i++
-              ) {
-                timespan.southern.includedMonths.push(
-                  moment(String(i)).format("MMMM")
-                );
+              if (month === 3) {
+                return "March";
               }
-            }
+              if (month === 4) {
+                return "April";
+              }
+              if (month === 5) {
+                return "May";
+              }
+              if (month === 6) {
+                return "June";
+              }
+              if (month === 7) {
+                return "July";
+              }
+              if (month === 8) {
+                return "August";
+              }
+              if (month === 9) {
+                return "September";
+              }
+              if (month === 10) {
+                return "October";
+              }
+              if (month === 11) {
+                return "November";
+              }
+              if (month === 12) {
+                return "December";
+              }
+            });
 
             southStartMonth = moment(
               response.data[key].availability["month-southern"].split("-")[0]
@@ -268,7 +275,8 @@ class Fish extends React.Component {
             availability: {
               northern: timespan.northern,
               southern: timespan.southern,
-              time: response.data[key].availability.time,
+              //time: response.data[key].availability.time,
+              time: timeOfDay,
               location: response.data[key].availability.location,
               rarity: orderedRarity,
             },
@@ -358,10 +366,14 @@ class Fish extends React.Component {
 
     if (
       value === "allTimes" ||
-      value === "4pm - 9am" ||
-      value === "9pm - 4am" ||
-      value === "4am - 9pm" ||
-      value === "9am - 4pm"
+      value === "4am - 9am" ||
+      value === "9am - 4pm" ||
+      value === "4pm - 9pm" ||
+      value === "9pm - 4am"
+      // value === "4pm - 9am" ||
+      // value === "9pm - 4am" ||
+      // value === "4am - 9pm" ||
+      // value === "9am - 4pm"
     ) {
       this.setState({ time: value }, this.filterFish);
     }
@@ -385,9 +397,10 @@ class Fish extends React.Component {
         this.state.month !== "allYear"
       ) {
         if (
-          (fish.availability.time === this.state.time ||
-            fish.availability.time === "Any") &&
-          fish.availability.location === this.state.location &&
+          (fish.availability.time.group.includes(this.state.time) ||
+            fish.availability.time.hours === "Any") &&
+          fish.availability.location.includes(this.state.location) &&
+          // fish.availability.location === this.state.location &&
           (fish.availability[this.state.hemisphere].includedMonths.includes(
             this.state.month
           ) ||
@@ -402,9 +415,10 @@ class Fish extends React.Component {
         this.state.month === "allYear"
       ) {
         if (
-          (fish.availability.time === this.state.time ||
-            fish.availability.time === "Any") &&
-          fish.availability.location === this.state.location
+          (fish.availability.time.group.includes(this.state.time) ||
+            fish.availability.time.hours === "Any") &&
+          fish.availability.location.includes(this.state.location)
+          // fish.availability.location === this.state.location
         ) {
           return fish;
         }
@@ -415,8 +429,8 @@ class Fish extends React.Component {
         this.state.month !== "allYear"
       ) {
         if (
-          (fish.availability.time === this.state.time ||
-            fish.availability.time === "Any") &&
+          (fish.availability.time.group.includes(this.state.time) ||
+            fish.availability.time.hours === "Any") &&
           (fish.availability[this.state.hemisphere].includedMonths.includes(
             this.state.month
           ) ||
@@ -446,7 +460,8 @@ class Fish extends React.Component {
         this.state.location !== "allLocations" &&
         this.state.month === "allYear"
       ) {
-        if (fish.availability.location === this.state.location) {
+        if (fish.availability.location.includes(this.state.location)) {
+          // if (fish.availability.location === this.state.location) {
           return fish;
         }
       }
@@ -457,8 +472,8 @@ class Fish extends React.Component {
         this.state.month === "allYear"
       ) {
         if (
-          fish.availability.time === this.state.time ||
-          fish.availability.time === "Any"
+          fish.availability.time.group.includes(this.state.time) ||
+          fish.availability.time.hours === "Any"
         ) {
           return fish;
         }
@@ -469,7 +484,8 @@ class Fish extends React.Component {
         this.state.month !== "allYear"
       ) {
         if (
-          (fish.availability.location === this.state.location &&
+          (fish.availability.location.includes(this.state.location) &&
+            // (fish.availability.location === this.state.location &&
             fish.availability[this.state.hemisphere].includedMonths.includes(
               this.state.month
             )) ||
