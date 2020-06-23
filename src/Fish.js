@@ -29,11 +29,13 @@ class Fish extends React.Component {
       for (let key in response.data) {
         if (key.includes("_")) {
           fishName = key.split("_");
-          fishName[0] =
-            fishName[0].charAt(0).toUpperCase() + fishName[0].slice(1);
-          fishName[1] =
-            fishName[1].charAt(0).toUpperCase() + fishName[1].slice(1);
-          fishName = `${fishName[0]} ${fishName[1]}`;
+          let capitalizedName = [];
+          for (let i = 0; i < fishName.length; i++) {
+            capitalizedName.push(
+              fishName[i].charAt(0).toUpperCase() + fishName[i].slice(1)
+            );
+          }
+          fishName = capitalizedName.join(" ");
         } else {
           fishName = key.charAt(0).toUpperCase() + key.slice(1);
         }
@@ -61,6 +63,12 @@ class Fish extends React.Component {
           if (response.data[key].availability.time === "9pm - 4am") {
             timeOfDay.hours = response.data[key].availability.time;
             timeOfDay.group.push("9pm - 4am");
+          }
+          if (
+            response.data[key].availability.time === "9am - 4pm & 9pm - 4am"
+          ) {
+            timeOfDay.hours = response.data[key].availability.time;
+            timeOfDay.group.push("9am - 4pm", "9pm - 4am");
           }
 
           let northStartMonth;
@@ -153,16 +161,46 @@ class Fish extends React.Component {
               }
             });
 
-            northStartMonth = moment(
-              response.data[key].availability["month-northern"].split("-")[0]
-            ).format("MMMM");
+            if (
+              response.data[key].availability["month-northern"].includes("&")
+            ) {
+              let firstPeriod = response.data[key].availability[
+                "month-northern"
+              ].split("&")[0];
+              let secondPeriod = response.data[key].availability[
+                "month-northern"
+              ].split("&")[1];
 
-            northEndMonth = moment(
-              response.data[key].availability["month-northern"].split("-")[1]
-            ).format("MMMM");
+              let firstPeriodNorthStartMonth = moment(
+                firstPeriod.split("-")[0]
+              ).format("MMMM");
 
-            northMonths = `${northStartMonth} - ${northEndMonth}`;
-            timespan.northern.value = northMonths;
+              let firstPeriodNorthEndMonth = moment(
+                firstPeriod.split("-")[1]
+              ).format("MMMM");
+
+              let secondPeriodNorthStartMonth = moment(
+                secondPeriod.split("-")[0]
+              ).format("MMMM");
+
+              let secondPeriodNorthEndMonth = moment(
+                secondPeriod.split("-")[1]
+              ).format("MMMM");
+
+              northMonths = `${firstPeriodNorthStartMonth} - ${firstPeriodNorthEndMonth} & ${secondPeriodNorthStartMonth} - ${secondPeriodNorthEndMonth}`;
+              timespan.northern.value = northMonths;
+            } else {
+              northStartMonth = moment(
+                response.data[key].availability["month-northern"].split("-")[0]
+              ).format("MMMM");
+
+              northEndMonth = moment(
+                response.data[key].availability["month-northern"].split("-")[1]
+              ).format("MMMM");
+
+              northMonths = `${northStartMonth} - ${northEndMonth}`;
+              timespan.northern.value = northMonths;
+            }
 
             timespan.southern.includedMonths = response.data[key].availability[
               "month-array-southern"
@@ -205,16 +243,46 @@ class Fish extends React.Component {
               }
             });
 
-            southStartMonth = moment(
-              response.data[key].availability["month-southern"].split("-")[0]
-            ).format("MMMM");
+            if (
+              response.data[key].availability["month-southern"].includes("&")
+            ) {
+              let firstPeriod = response.data[key].availability[
+                "month-southern"
+              ].split("&")[0];
+              let secondPeriod = response.data[key].availability[
+                "month-southern"
+              ].split("&")[1];
 
-            southEndMonth = moment(
-              response.data[key].availability["month-southern"].split("-")[1]
-            ).format("MMMM");
+              let firstPeriodSouthStartMonth = moment(
+                firstPeriod.split("-")[0]
+              ).format("MMMM");
 
-            southMonths = `${southStartMonth} - ${southEndMonth}`;
-            timespan.southern.value = southMonths;
+              let firstPeriodSouthEndMonth = moment(
+                firstPeriod.split("-")[1]
+              ).format("MMMM");
+
+              let secondPeriodSouthStartMonth = moment(
+                secondPeriod.split("-")[0]
+              ).format("MMMM");
+
+              let secondPeriodSouthEndMonth = moment(
+                secondPeriod.split("-")[1]
+              ).format("MMMM");
+
+              southMonths = `${firstPeriodSouthStartMonth} - ${firstPeriodSouthEndMonth} & ${secondPeriodSouthStartMonth} - ${secondPeriodSouthEndMonth}`;
+              timespan.southern.value = southMonths;
+            } else {
+              southStartMonth = moment(
+                response.data[key].availability["month-southern"].split("-")[0]
+              ).format("MMMM");
+
+              southEndMonth = moment(
+                response.data[key].availability["month-southern"].split("-")[1]
+              ).format("MMMM");
+
+              southMonths = `${southStartMonth} - ${southEndMonth}`;
+              timespan.southern.value = southMonths;
+            }
           }
 
           let orderedRarity = {

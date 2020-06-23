@@ -27,6 +27,9 @@ class Bugs extends React.Component {
       let allBugs = [];
       let bugName = "";
       for (let key in response.data) {
+        // if (response.data[key].name["name-USen"].includes("emperor")) {
+        //   console.log(response.data[key]);
+        // }
         if (key.includes("_")) {
           bugName = key.split("_");
           let capitalizedName = [];
@@ -36,9 +39,6 @@ class Bugs extends React.Component {
             );
           }
           bugName = capitalizedName.join(" ");
-          // bugName[0] = bugName[0].charAt(0).toUpperCase() + bugName[0].slice(1);
-          // bugName[1] = bugName[1].charAt(0).toUpperCase() + bugName[1].slice(1);
-          // bugName = `${bugName[0]} ${bugName[1]}`;
         } else {
           bugName = key.charAt(0).toUpperCase() + key.slice(1);
         }
@@ -46,6 +46,7 @@ class Bugs extends React.Component {
           if (response.data[key].availability.time === "") {
             response.data[key].availability.time = "Any";
           }
+
           let northStartMonth;
           let northEndMonth;
           let southStartMonth;
@@ -54,14 +55,33 @@ class Bugs extends React.Component {
           let southMonths;
 
           let timespan = {
-            value: "",
-            includedMonths: [],
+            northern: { value: "", includedMonths: [] },
+            southern: { value: "", includedMonths: [] },
           };
 
-          if (response.data[key].availability["month-northern"] === "") {
+          if (
+            response.data[key].availability["month-northern"] === "" ||
+            response.data[key].availability["month-southern"] === ""
+          ) {
             northMonths = "Year-Round";
-            timespan.value = northMonths;
-            timespan.includedMonths = [
+            southMonths = "Year-Round";
+            timespan.northern.value = northMonths;
+            timespan.southern.value = southMonths;
+            timespan.northern.includedMonths = [
+              "January",
+              "February",
+              "March",
+              "April",
+              "May",
+              "June",
+              "July",
+              "August",
+              "September",
+              "October",
+              "November",
+              "December",
+            ];
+            timespan.southern.includedMonths = [
               "January",
               "February",
               "March",
@@ -76,67 +96,171 @@ class Bugs extends React.Component {
               "December",
             ];
           } else {
+            timespan.northern.includedMonths = response.data[key].availability[
+              "month-array-northern"
+            ].map((month) => {
+              if (month === 1) {
+                return "January";
+              }
+              if (month === 2) {
+                return "February";
+              }
+              if (month === 3) {
+                return "March";
+              }
+              if (month === 4) {
+                return "April";
+              }
+              if (month === 5) {
+                return "May";
+              }
+              if (month === 6) {
+                return "June";
+              }
+              if (month === 7) {
+                return "July";
+              }
+              if (month === 8) {
+                return "August";
+              }
+              if (month === 9) {
+                return "September";
+              }
+              if (month === 10) {
+                return "October";
+              }
+              if (month === 11) {
+                return "November";
+              }
+              if (month === 12) {
+                return "December";
+              }
+            });
+
             if (
-              Number(
-                response.data[key].availability["month-northern"].split("-")[0]
-              ) <
-              Number(
-                response.data[key].availability["month-northern"].split("-")[1]
-              )
+              response.data[key].availability["month-northern"].includes("&")
             ) {
-              for (
-                let i = response.data[key].availability["month-northern"].split(
-                  "-"
-                )[0];
-                i <=
-                response.data[key].availability["month-northern"].split("-")[1];
-                i++
-              ) {
-                timespan.includedMonths.push(moment(String(i)).format("MMMM"));
-              }
+              let firstPeriod = response.data[key].availability[
+                "month-northern"
+              ].split("&")[0];
+              let secondPeriod = response.data[key].availability[
+                "month-northern"
+              ].split("&")[1];
+
+              let firstPeriodNorthStartMonth = moment(
+                firstPeriod.split("-")[0]
+              ).format("MMMM");
+
+              let firstPeriodNorthEndMonth = moment(
+                firstPeriod.split("-")[1]
+              ).format("MMMM");
+
+              let secondPeriodNorthStartMonth = moment(
+                secondPeriod.split("-")[0]
+              ).format("MMMM");
+
+              let secondPeriodNorthEndMonth = moment(
+                secondPeriod.split("-")[1]
+              ).format("MMMM");
+
+              northMonths = `${firstPeriodNorthStartMonth} - ${firstPeriodNorthEndMonth} & ${secondPeriodNorthStartMonth} - ${secondPeriodNorthEndMonth}`;
+              timespan.northern.value = northMonths;
             } else {
-              for (
-                let i = response.data[key].availability["month-northern"].split(
-                  "-"
-                )[0];
-                i <= 12;
-                i++
-              ) {
-                timespan.includedMonths.push(moment(String(i)).format("MMMM"));
-              }
-              for (
-                let i = 1;
-                i <=
-                Number(
-                  response.data[key].availability["month-northern"].split(
-                    "-"
-                  )[1]
-                );
-                i++
-              ) {
-                timespan.includedMonths.push(moment(String(i)).format("MMMM"));
-              }
+              northStartMonth = moment(
+                response.data[key].availability["month-northern"].split("-")[0]
+              ).format("MMMM");
+
+              northEndMonth = moment(
+                response.data[key].availability["month-northern"].split("-")[1]
+              ).format("MMMM");
+
+              northMonths = `${northStartMonth} - ${northEndMonth}`;
+              timespan.northern.value = northMonths;
             }
-            northStartMonth = moment(
-              response.data[key].availability["month-northern"].split("-")[0]
-            ).format("MMMM");
-            northEndMonth = moment(
-              response.data[key].availability["month-northern"].split("-")[1]
-            ).format("MMMM");
-            northMonths = `${northStartMonth} - ${northEndMonth}`;
-            timespan.value = northMonths;
+
+            timespan.southern.includedMonths = response.data[key].availability[
+              "month-array-southern"
+            ].map((month) => {
+              if (month === 1) {
+                return "January";
+              }
+              if (month === 2) {
+                return "February";
+              }
+              if (month === 3) {
+                return "March";
+              }
+              if (month === 4) {
+                return "April";
+              }
+              if (month === 5) {
+                return "May";
+              }
+              if (month === 6) {
+                return "June";
+              }
+              if (month === 7) {
+                return "July";
+              }
+              if (month === 8) {
+                return "August";
+              }
+              if (month === 9) {
+                return "September";
+              }
+              if (month === 10) {
+                return "October";
+              }
+              if (month === 11) {
+                return "November";
+              }
+              if (month === 12) {
+                return "December";
+              }
+            });
+
+            if (
+              response.data[key].availability["month-southern"].includes("&")
+            ) {
+              let firstPeriod = response.data[key].availability[
+                "month-southern"
+              ].split("&")[0];
+              let secondPeriod = response.data[key].availability[
+                "month-southern"
+              ].split("&")[1];
+
+              let firstPeriodSouthStartMonth = moment(
+                firstPeriod.split("-")[0]
+              ).format("MMMM");
+
+              let firstPeriodSouthEndMonth = moment(
+                firstPeriod.split("-")[1]
+              ).format("MMMM");
+
+              let secondPeriodSouthStartMonth = moment(
+                secondPeriod.split("-")[0]
+              ).format("MMMM");
+
+              let secondPeriodSouthEndMonth = moment(
+                secondPeriod.split("-")[1]
+              ).format("MMMM");
+
+              southMonths = `${firstPeriodSouthStartMonth} - ${firstPeriodSouthEndMonth} & ${secondPeriodSouthStartMonth} - ${secondPeriodSouthEndMonth}`;
+              timespan.southern.value = southMonths;
+            } else {
+              southStartMonth = moment(
+                response.data[key].availability["month-southern"].split("-")[0]
+              ).format("MMMM");
+
+              southEndMonth = moment(
+                response.data[key].availability["month-southern"].split("-")[1]
+              ).format("MMMM");
+
+              southMonths = `${southStartMonth} - ${southEndMonth}`;
+              timespan.southern.value = southMonths;
+            }
           }
-          if (response.data[key].availability["month-southern"] === "") {
-            southMonths = "Year-Round";
-          } else {
-            southStartMonth = moment(
-              response.data[key].availability["month-southern"].split("-")[0]
-            ).format("MMMM");
-            southEndMonth = moment(
-              response.data[key].availability["month-southern"].split("-")[1]
-            ).format("MMMM");
-            southMonths = `${southStartMonth} - ${southEndMonth}`;
-          }
+
           let orderedRarity = {
             value: "",
             rarity: "",
@@ -161,8 +285,8 @@ class Bugs extends React.Component {
           allBugs.push({
             name: bugName,
             availability: {
-              northern: timespan,
-              southern: southMonths,
+              northern: timespan.northern,
+              southern: timespan.southern,
               time: response.data[key].availability.time,
               location: response.data[key].availability.location,
               rarity: orderedRarity,
@@ -211,10 +335,10 @@ class Bugs extends React.Component {
 
   handleFilter(value) {
     if (value === "northern") {
-      this.setState({ hemisphere: "northern" });
+      this.setState({ hemisphere: "northern" }, this.filterBugs);
     }
     if (value === "southern") {
-      this.setState({ hemisphere: "southern" });
+      this.setState({ hemisphere: "southern" }, this.filterBugs);
     }
 
     if (
@@ -272,11 +396,11 @@ class Bugs extends React.Component {
         if (
           (bug.availability.time === this.state.time ||
             bug.availability.time === "Any") &&
-          bug.availability.location === this.state.location &&
-          (bug.availability.northern.includedMonths.includes(
+          bug.availability.location.includes(this.state.location) &&
+          (bug.availability[this.state.hemisphere].includedMonths.includes(
             this.state.month
           ) ||
-            bug.availability.northern === "Year-Round")
+            bug.availability[this.state.hemisphere] === "Year-Round")
         ) {
           return bug;
         }
@@ -289,7 +413,7 @@ class Bugs extends React.Component {
         if (
           (bug.availability.time === this.state.time ||
             bug.availability.time === "Any") &&
-          bug.availability.location === this.state.location
+          bug.availability.location.includes(this.state.location)
         ) {
           return bug;
         }
@@ -302,10 +426,10 @@ class Bugs extends React.Component {
         if (
           (bug.availability.time === this.state.time ||
             bug.availability.time === "Any") &&
-          (bug.availability.northern.includedMonths.includes(
+          (bug.availability[this.state.hemisphere].includedMonths.includes(
             this.state.month
           ) ||
-            bug.availability.northern === "Year-Round")
+            bug.availability[this.state.hemisphere] === "Year-Round")
         ) {
           return bug;
         }
@@ -317,8 +441,10 @@ class Bugs extends React.Component {
         this.state.month !== "allYear"
       ) {
         if (
-          bug.availability.northern.includedMonths.includes(this.state.month) ||
-          bug.availability.northern === "Year-Round"
+          bug.availability[this.state.hemisphere].includedMonths.includes(
+            this.state.month
+          ) ||
+          bug.availability[this.state.hemisphere] === "Year-Round"
         ) {
           return bug;
         }
@@ -329,7 +455,7 @@ class Bugs extends React.Component {
         this.state.location !== "allLocations" &&
         this.state.month === "allYear"
       ) {
-        if (bug.availability.location === this.state.location) {
+        if (bug.availability.location.includes(this.state.location)) {
           return bug;
         }
       }
@@ -340,7 +466,7 @@ class Bugs extends React.Component {
         this.state.month === "allYear"
       ) {
         if (
-          bug.availability.time === this.state.time ||
+          bug.availability.time.includes(this.state.time) ||
           bug.availability.time === "Any"
         ) {
           return bug;
@@ -352,11 +478,11 @@ class Bugs extends React.Component {
         this.state.month !== "allYear"
       ) {
         if (
-          (bug.availability.location === this.state.location &&
-            bug.availability.northern.includedMonths.includes(
+          (bug.availability.location.includes(this.state.location) &&
+            bug.availability[this.state.hemisphere].includedMonths.includes(
               this.state.month
             )) ||
-          bug.availability.northern === "Year-Round"
+          bug.availability[this.state.hemisphere] === "Year-Round"
         ) {
           return bug;
         }
