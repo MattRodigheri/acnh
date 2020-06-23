@@ -4,6 +4,7 @@ import { TabContent, TabPane, Nav, NavItem, NavLink } from "reactstrap";
 import classnames from "classnames";
 import Fish from "./Fish.js";
 import Bugs from "./Bugs.js";
+// import { Cookies } from "react-cookie";
 
 class App extends React.Component {
   constructor() {
@@ -25,6 +26,11 @@ class App extends React.Component {
   }
 
   render() {
+    // const cookies = new Cookies();
+    // cookies.set("name", "matt");
+    // // console.log(cookies.get("name"));
+    // console.log(cookies);
+
     return (
       <div className="App">
         <Nav tabs>

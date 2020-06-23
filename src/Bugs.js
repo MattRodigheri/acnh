@@ -3,6 +3,7 @@ import axios from "axios";
 import moment from "moment";
 import BugHeadings from "./BugHeadings.js";
 import EachBug from "./EachBug.js";
+import { Cookies } from "react-cookie";
 
 class Bugs extends React.Component {
   constructor() {
@@ -15,14 +16,26 @@ class Bugs extends React.Component {
       month: "allYear",
       time: "allTimes",
       location: "allLocations",
+      caughtBugs: [],
     };
 
+    this.handleInputChange = this.handleInputChange.bind(this);
     this.handleSort = this.handleSort.bind(this);
     this.handleFilter = this.handleFilter.bind(this);
     this.filterBugs = this.filterBugs.bind(this);
   }
 
   componentDidMount() {
+    const cookies = new Cookies();
+    const caughtCookies = cookies.getAll();
+    let caughtBugs = [];
+    for (let key in caughtCookies) {
+      if (caughtCookies[key].includes("*")) {
+        caughtBugs.push(key);
+      }
+    }
+    this.setState({ caughtBugs });
+
     axios.get("http://acnhapi.com/v1/bugs").then((response) => {
       let allBugs = [];
       let bugName = "";
@@ -306,6 +319,23 @@ class Bugs extends React.Component {
     });
   }
 
+  handleInputChange(name) {
+    const cookies = new Cookies();
+    let caughtBugs = this.state.caughtBugs;
+    if (!caughtBugs.includes(name)) {
+      cookies.set(`${name}`, `*${name}`);
+      caughtBugs.push(name);
+    } else {
+      cookies.remove(name);
+      caughtBugs.filter((bug) => {
+        if (bug !== name) {
+          return bug;
+        }
+      });
+    }
+    this.setState({ caughtBugs });
+  }
+
   handleSort(value) {
     let sortedBugs;
 
@@ -518,7 +548,13 @@ class Bugs extends React.Component {
   render() {
     const allBugs = this.state.bugs.map((bug, index) => {
       return (
-        <EachBug key={index} bug={bug} hemisphere={this.state.hemisphere} />
+        <EachBug
+          key={index}
+          bug={bug}
+          hemisphere={this.state.hemisphere}
+          handleInputChange={this.handleInputChange}
+          caughtBugs={this.state.caughtBugs}
+        />
       );
     });
 

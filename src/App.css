@@ -35,7 +35,7 @@
 .bugTableHeadings,
 .eachBug {
   display: grid;
-  grid-template-columns: 15% 15% 10% 15% 13% 12% 10% 8%;
+  grid-template-columns: 2% 15% 15% 10% 15% 13% 12% 10% 6%;
   grid-template-rows: 5em;
   border-top: 1px solid black;
   align-items: center;

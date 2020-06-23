@@ -8,6 +8,7 @@ class BugHeadings extends React.Component {
   render() {
     return (
       <div className="bugTableHeadings">
+        <p>Caught?</p>
         <p>Name</p>
         <div>
           <p>Yearly Availability</p>
