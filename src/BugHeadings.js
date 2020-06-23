@@ -56,13 +56,15 @@ class BugHeadings extends React.Component {
             <option value="allLocations">All</option>
             <option value="Flying">Flying</option>
             <option value="Trees">Trees</option>
+            <option value="Stumps">Tree Stumps</option>
             <option value="Ground">Ground</option>
             <option value="Flowers">Flowers</option>
-            <option value="Water">Water</option>
+            <option value="Ponds">Ponds & Rivers</option>
             <option value="Beach">Beach</option>
             <option value="Rocks">Rocks</option>
             <option value="Trash">Trash</option>
-            <option value="Misc">Misc.</option>
+            <option value="Food">Rotten Food</option>
+            <option value="Villagers">Villagers</option>
           </select>
         </div>
 

@@ -27,9 +27,6 @@ class Bugs extends React.Component {
       let allBugs = [];
       let bugName = "";
       for (let key in response.data) {
-        // if (response.data[key].name["name-USen"].includes("emperor")) {
-        //   console.log(response.data[key]);
-        // }
         if (key.includes("_")) {
           bugName = key.split("_");
           let capitalizedName = [];
@@ -261,6 +258,10 @@ class Bugs extends React.Component {
             }
           }
 
+          if (response.data[key].availability.location === "") {
+            response.data[key].availability.location = "Shaking trees";
+          }
+
           let orderedRarity = {
             value: "",
             rarity: "",
@@ -374,11 +375,13 @@ class Bugs extends React.Component {
       value === "allLocations" ||
       value === "Flying" ||
       value === "Trees" ||
+      value === "Stumps" ||
       value === "Ground" ||
       value === "Flowers" ||
-      value === "Water" ||
+      value === "Ponds" ||
       value === "Beach" ||
       value === "Trash" ||
+      value === "Food" ||
       value === "Rocks" ||
       value === "Villagers"
     ) {
@@ -396,7 +399,9 @@ class Bugs extends React.Component {
         if (
           (bug.availability.time === this.state.time ||
             bug.availability.time === "Any") &&
-          bug.availability.location.includes(this.state.location) &&
+          bug.availability.location
+            .toLowerCase()
+            .includes(this.state.location.toLowerCase()) &&
           (bug.availability[this.state.hemisphere].includedMonths.includes(
             this.state.month
           ) ||
@@ -413,7 +418,9 @@ class Bugs extends React.Component {
         if (
           (bug.availability.time === this.state.time ||
             bug.availability.time === "Any") &&
-          bug.availability.location.includes(this.state.location)
+          bug.availability.location
+            .toLowerCase()
+            .includes(this.state.location.toLowerCase())
         ) {
           return bug;
         }
@@ -455,7 +462,11 @@ class Bugs extends React.Component {
         this.state.location !== "allLocations" &&
         this.state.month === "allYear"
       ) {
-        if (bug.availability.location.includes(this.state.location)) {
+        if (
+          bug.availability.location
+            .toLowerCase()
+            .includes(this.state.location.toLowerCase())
+        ) {
           return bug;
         }
       }
@@ -478,7 +489,9 @@ class Bugs extends React.Component {
         this.state.month !== "allYear"
       ) {
         if (
-          (bug.availability.location.includes(this.state.location) &&
+          (bug.availability.location
+            .toLowerCase()
+            .includes(this.state.location.toLowerCase()) &&
             bug.availability[this.state.hemisphere].includedMonths.includes(
               this.state.month
             )) ||
