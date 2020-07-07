@@ -89,7 +89,7 @@ class FishHeadings extends React.Component {
         <p>Nook's Price</p>
         <p>CJ's Price</p>
         <select onChange={(event) => this.props.handleSort(event.target.value)}>
-          <option value="a-z">Price</option>
+          <option value="-">Price</option>
           <option value="highToLow">High to Low</option>
           <option value="lowToHigh">Low to High</option>
         </select>

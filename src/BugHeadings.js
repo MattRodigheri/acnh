@@ -76,6 +76,7 @@ class BugHeadings extends React.Component {
               this.props.handleSort(event.target.value);
             }}
           >
+            <option value="-">-</option>
             <option value="mostRare">Most Rare</option>
             <option value="mostCommon">Most Common</option>
           </select>
@@ -84,7 +85,7 @@ class BugHeadings extends React.Component {
         <p>Nook's Price</p>
         <p>Flick's Price</p>
         <select onChange={(event) => this.props.handleSort(event.target.value)}>
-          <option value="a-z">Price</option>
+          <option value="-">Price</option>
           <option value="highToLow">High to Low</option>
           <option value="lowToHigh">Low to High</option>
         </select>

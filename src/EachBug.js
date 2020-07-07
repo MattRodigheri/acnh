@@ -1,18 +1,9 @@
 import React from "react";
+import { Cookies } from "react-cookie";
 
 class EachBug extends React.Component {
   constructor(props) {
     super(props);
-
-    this.state = {
-      isCaught: false,
-    };
-  }
-
-  componentDidMount() {
-    if (this.props.caughtBugs.includes(this.props.bug.name)) {
-      this.setState({ isCaught: true });
-    }
   }
 
   render() {
@@ -21,12 +12,9 @@ class EachBug extends React.Component {
         <input
           type="checkbox"
           name="isCaught"
-          checked={this.state.isCaught}
+          checked={this.props.isCaught}
           onChange={() => {
-            this.setState(
-              { isCaught: !this.state.isCaught },
-              this.props.handleInputChange(this.props.bug.name)
-            );
+            this.props.handleInputChange(this.props.bug.name);
           }}
         />
         <p>{this.props.bug.name}</p>
