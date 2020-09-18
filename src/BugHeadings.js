@@ -8,7 +8,7 @@ class BugHeadings extends React.Component {
   render() {
     return (
       <div className="bugTableHeadings">
-        <p>Caught?</p>
+        <p>Image</p>
         <p>Name</p>
         <div>
           <p>Yearly Availability</p>
@@ -84,11 +84,12 @@ class BugHeadings extends React.Component {
 
         <p>Nook's Price</p>
         <p>Flick's Price</p>
-        <select onChange={(event) => this.props.handleSort(event.target.value)}>
+        {/* <p>Caught?</p> */}
+        {/* <select onChange={(event) => this.props.handleSort(event.target.value)}>
           <option value="-">Price</option>
           <option value="highToLow">High to Low</option>
           <option value="lowToHigh">Low to High</option>
-        </select>
+        </select> */}
       </div>
     );
   }

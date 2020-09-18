@@ -1,33 +1,34 @@
 import React from "react";
-import { Cookies } from "react-cookie";
 
-class EachBug extends React.Component {
-  constructor(props) {
-    super(props);
-  }
+const EachBug = (props) => {
+  return (
+    <div className="eachBug">
+      <img src={props.bug.image} alt={props.bug.name} />
+      <p>{props.bug.name}</p>
+      <p>{props.bug.availability[props.hemisphere].value}</p>
+      <p>{props.bug.availability.time}</p>
+      <p>{props.bug.availability.location}</p>
+      <p>{props.bug.availability.rarity.rarity}</p>
+      <p>{props.bug.price}</p>
+      <p>{props.bug.flickPrice}</p>
+      {/* <label class="container">One
+  <input type="checkbox" checked="checked">
+  <span class="checkmark"></span>
+</label> */}
 
-  render() {
-    return (
-      <div className="eachBug">
+      <label class="container">
         <input
           type="checkbox"
           name="isCaught"
-          checked={this.props.isCaught}
+          checked={props.isCaught}
           onChange={() => {
-            this.props.handleInputChange(this.props.bug.name);
+            props.handleInputChange(props.bug.name);
           }}
         />
-        <p>{this.props.bug.name}</p>
-        <p>{this.props.bug.availability[this.props.hemisphere].value}</p>
-        <p>{this.props.bug.availability.time}</p>
-        <p>{this.props.bug.availability.location}</p>
-        <p>{this.props.bug.availability.rarity.rarity}</p>
-        <p>{this.props.bug.price}</p>
-        <p>{this.props.bug.flickPrice}</p>
-        <img src={this.props.bug.image} alt={this.props.bug.name} />
-      </div>
-    );
-  }
-}
+        <span class="checkmark"></span>
+      </label>
+    </div>
+  );
+};
 
 export default EachBug;
