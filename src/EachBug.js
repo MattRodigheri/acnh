@@ -16,7 +16,7 @@ const EachBug = (props) => {
   <span class="checkmark"></span>
 </label> */}
 
-      <label class="container">
+      <label className="container">
         <input
           type="checkbox"
           name="isCaught"
@@ -25,7 +25,7 @@ const EachBug = (props) => {
             props.handleInputChange(props.bug.name);
           }}
         />
-        <span class="checkmark"></span>
+        <span className="checkmark"></span>
       </label>
     </div>
   );
